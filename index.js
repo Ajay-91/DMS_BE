@@ -6,10 +6,24 @@ const router = require("./routes");
 
 const server = express();
 const port = process.env.PORT || 3000;
-server.use(cors());
+
+// CORS configuration - allow your frontend to access the API
+server.use(cors({
+  origin: '*', // Allow all origins, or specify your frontend URL
+  credentials: true
+}));
 
 //parser middleware
 server.use(express.json());
+
+// Health check route
+server.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'DMS Backend API is running!',
+    status: 'healthy',
+    timestamp: new Date().toISOString()
+  });
+});
 
 server.use(router);
 
